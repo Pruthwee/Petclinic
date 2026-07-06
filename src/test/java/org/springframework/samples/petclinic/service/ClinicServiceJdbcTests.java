@@ -15,22 +15,29 @@
  */
 package org.springframework.samples.petclinic.service;
 
+import org.springframework.samples.petclinic.config.BusinessConfig;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * <p> Integration test using the jdbc profile.
+ * <p>Integration test using the jdbc profile.</p>
+ *
+ * <p>Migrated from XML-based configuration:
+ * {@code @SpringJUnitConfig(locations = {"classpath:spring/business-config.xml", ...})}
+ * to annotation-driven Java configuration:
+ * {@code @SpringJUnitConfig(classes = {BusinessConfig.class})}
+ * for cloud-native compatibility with AWS environments.</p>
+ *
+ * <p>Environment-specific values (database URL, credentials) are externalized via
+ * environment variables or AWS Parameter Store / Secrets Manager, following
+ * 12-factor app principles.</p>
  *
  * @author Thomas Risberg
  * @author Michael Isvy
- * @see AbstractClinicServiceTests AbstractClinicServiceTests for more details. </p>
+ * @see AbstractClinicServiceTests AbstractClinicServiceTests for more details.
  */
-
-@SpringJUnitConfig(locations = {"classpath:spring/business-config.xml"})
+@SpringJUnitConfig(classes = {BusinessConfig.class})
 @ActiveProfiles("jdbc")
 class ClinicServiceJdbcTests extends AbstractClinicServiceTests {
-
 
 }

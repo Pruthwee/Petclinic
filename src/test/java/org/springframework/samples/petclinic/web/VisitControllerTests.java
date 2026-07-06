@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.web;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.config.MvcConfig;
+import org.springframework.samples.petclinic.config.MvcTestConfig;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
@@ -15,11 +17,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Test class for {@link VisitController}
+ * Test class for {@link VisitController}.
+ *
+ * <p>Migrated from XML-based configuration:
+ * {@code @SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", ...})}
+ * to annotation-driven Java configuration:
+ * {@code @SpringJUnitWebConfig(classes = {MvcConfig.class, MvcTestConfig.class})}
+ * for cloud-native compatibility with AWS environments.</p>
+ *
+ * <p>Environment-specific values are externalized via environment variables or
+ * AWS Parameter Store / Secrets Manager, following 12-factor app principles.</p>
  *
  * @author Colin But
  */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcConfig.class, MvcTestConfig.class})
 class VisitControllerTests {
 
     private static final int TEST_PET_ID = 1;
@@ -73,6 +84,5 @@ class VisitControllerTests {
             .andExpect(model().attributeExists("visits"))
             .andExpect(view().name("visitList"));
     }
-
 
 }

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.config.MvcConfig;
+import org.springframework.samples.petclinic.config.MvcTestConfig;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -19,9 +21,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Test class for the {@link VetController}
+ * Test class for the {@link VetController}.
+ *
+ * <p>Migrated from XML-based configuration:
+ * {@code @SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", ...})}
+ * to annotation-driven Java configuration:
+ * {@code @SpringJUnitWebConfig(classes = {MvcConfig.class, MvcTestConfig.class})}
+ * for cloud-native compatibility with AWS environments.</p>
+ *
+ * <p>Environment-specific values are externalized via environment variables or
+ * AWS Parameter Store / Secrets Manager, following 12-factor app principles.</p>
  */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcConfig.class, MvcTestConfig.class})
 class VetControllerTests {
 
     @Autowired
@@ -76,4 +87,3 @@ class VetControllerTests {
     }
 
 }
-

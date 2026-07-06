@@ -15,8 +15,11 @@
  */
 package org.springframework.samples.petclinic;
 
+import org.springframework.samples.petclinic.config.BusinessConfig;
+import org.springframework.samples.petclinic.config.MvcConfig;
+import org.springframework.samples.petclinic.config.ToolsConfig;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
@@ -33,6 +36,11 @@ import javax.servlet.ServletContext;
  * Register a {@link DispatcherServlet}  in the servlet context.<br/>
  * For both servlets, register a {@link CharacterEncodingFilter}.
  * <p/>
+ * Migrated from XML-based configuration (classpath:spring/business-config.xml,
+ * classpath:spring/tools-config.xml, classpath:spring/mvc-core-config.xml) to
+ * annotation-driven Java configuration using {@link AnnotationConfigWebApplicationContext}.
+ * Environment-specific values are externalized to AWS Parameter Store, Secrets Manager,
+ * or environment variables following 12-factor app principles.
  *
  * @author Antoine Rey
  */
@@ -46,23 +54,40 @@ public class PetclinicInitializer extends AbstractDispatcherServletInitializer {
      * When using Spring Data JPA, use: spring-data-jpa
      * <p/>
      * <p>
-     * You also may use the -Dspring.profiles.active=jdbc VM options to change
-     * default jpa Spring profile.
+     * You also may use the -Dspring.profiles.active=jdbc VM options or the
+     * SPRING_PROFILES_ACTIVE environment variable to change the default jpa Spring profile.
+     * In AWS environments, set the SPRING_PROFILES_ACTIVE environment variable via
+     * ECS task definition, Elastic Beanstalk environment properties, or AWS Parameter Store.
      */
-    private static final String SPRING_PROFILE = "jpa";
+    private static final String DEFAULT_SPRING_PROFILE = "jpa";
 
     @Override
     protected WebApplicationContext createRootApplicationContext() {
-        XmlWebApplicationContext rootAppContext = new XmlWebApplicationContext();
-        rootAppContext.setConfigLocations("classpath:spring/business-config.xml", "classpath:spring/tools-config.xml");
-        rootAppContext.getEnvironment().setDefaultProfiles(SPRING_PROFILE);
+        // Migrated from XmlWebApplicationContext (classpath:spring/business-config.xml,
+        // classpath:spring/tools-config.xml) to AnnotationConfigWebApplicationContext
+        // to support annotation-driven Java configuration (cloud-native pattern).
+        // Environment-specific values are externalized via AWS Parameter Store or
+        // environment variables (SPRING_PROFILES_ACTIVE).
+        AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
+        rootAppContext.register(BusinessConfig.class, ToolsConfig.class);
+        // Read active profile from environment variable for cloud-native configuration;
+        // falls back to DEFAULT_SPRING_PROFILE if not set.
+        String activeProfile = System.getenv("SPRING_PROFILES_ACTIVE");
+        if (activeProfile != null && !activeProfile.trim().isEmpty()) {
+            rootAppContext.getEnvironment().setActiveProfiles(activeProfile.trim());
+        } else {
+            rootAppContext.getEnvironment().setDefaultProfiles(DEFAULT_SPRING_PROFILE);
+        }
         return rootAppContext;
     }
 
     @Override
     protected WebApplicationContext createServletApplicationContext() {
-        XmlWebApplicationContext webAppContext = new XmlWebApplicationContext();
-        webAppContext.setConfigLocation("classpath:spring/mvc-core-config.xml");
+        // Migrated from XmlWebApplicationContext (classpath:spring/mvc-core-config.xml)
+        // to AnnotationConfigWebApplicationContext to support annotation-driven Java
+        // configuration (cloud-native pattern).
+        AnnotationConfigWebApplicationContext webAppContext = new AnnotationConfigWebApplicationContext();
+        webAppContext.register(MvcConfig.class);
         return webAppContext;
     }
 
