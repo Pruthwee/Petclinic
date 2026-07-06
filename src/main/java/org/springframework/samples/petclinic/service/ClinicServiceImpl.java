@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Mostly used as a facade for all Petclinic controllers
+ * Mostly used as a facade for all Petclinic controllers (upgraded to Spring 6.x / Java 21)
  * Also a placeholder for @Transactional and @Cacheable annotations
  *
  * @author Michael Isvy

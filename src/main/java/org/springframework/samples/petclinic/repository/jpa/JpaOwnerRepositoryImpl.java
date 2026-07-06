@@ -17,11 +17,10 @@ package org.springframework.samples.petclinic.repository.jpa;
 
 import java.util.Collection;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
-import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.stereotype.Repository;
@@ -46,8 +45,10 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
      * Important: in the current version of this method, we load Owners with all their Pets and Visits while
      * we do not need Visits at all and we only need one property from the Pet objects (the 'name' property).
      * There are some ways to improve it such as:
-     * - creating a Ligtweight class (example here: https://community.jboss.org/wiki/LightweightClass)
-     * - Turning on lazy-loading and using {@link OpenSessionInViewFilter}
+     * - creating a Lightweight class (example here: https://community.jboss.org/wiki/LightweightClass)
+     * - Turning on lazy-loading and using an OpenSessionInView filter
+     * Note: org.springframework.orm.hibernate5.support.OpenSessionInViewFilter was removed in Spring 6.x
+     * as Hibernate 6.x is used with Spring 6.x. Use Spring's standard lazy-loading support instead.
      */
     @SuppressWarnings("unchecked")
     public Collection<Owner> findByLastName(String lastName) {

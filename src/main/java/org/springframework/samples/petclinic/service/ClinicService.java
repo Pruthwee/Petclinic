@@ -47,6 +47,12 @@ public interface ClinicService {
 
     Collection<Owner> findOwnerByLastName(String lastName);
 
-	Collection<Visit> findVisitsByPetId(int petId);
+    /**
+     * Retrieve all {@link Visit}s from the data store for a given pet id.
+     *
+     * @param petId the id of the pet whose visits to retrieve
+     * @return a {@link Collection} of matching {@link Visit}s
+     */
+    Collection<Visit> findVisitsByPetId(int petId);
 
 }
