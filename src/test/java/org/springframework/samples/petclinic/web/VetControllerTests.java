@@ -18,13 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Test class for the {@link VetController}
- */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
-class VetControllerTests {
-
-    @Autowired
+@SpringJUnitWebConfig
     private VetController vetController;
 
     @Autowired
@@ -76,4 +70,3 @@ class VetControllerTests {
     }
 
 }
-

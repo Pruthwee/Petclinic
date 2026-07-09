@@ -51,24 +51,11 @@ public class PetclinicInitializer extends AbstractDispatcherServletInitializer {
      */
     private static final String SPRING_PROFILE = "jpa";
 
-    @Override
-    protected WebApplicationContext createRootApplicationContext() {
-        XmlWebApplicationContext rootAppContext = new XmlWebApplicationContext();
-        rootAppContext.setConfigLocations("classpath:spring/business-config.xml", "classpath:spring/tools-config.xml");
-        rootAppContext.getEnvironment().setDefaultProfiles(SPRING_PROFILE);
-        return rootAppContext;
+        return new AnnotationConfigWebApplicationContext() {{
+        return new AnnotationConfigWebApplicationContext() {{
+            scan("org.springframework.samples.petclinic.web");
+        }};
     }
-
-    @Override
-    protected WebApplicationContext createServletApplicationContext() {
-        XmlWebApplicationContext webAppContext = new XmlWebApplicationContext();
-        webAppContext.setConfigLocation("classpath:spring/mvc-core-config.xml");
-        return webAppContext;
-    }
-
-    @Override
-    protected String[] getServletMappings() {
-        return new String[]{"/"};
     }
 
     @Override

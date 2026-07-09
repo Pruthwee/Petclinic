@@ -13,19 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test class for {@link CrashController}
- *
- * @author Colin But
- */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
-class CrashControllerTests {
-
-    @Autowired
-    private CrashController crashController;
-
-    @Autowired
-    private SimpleMappingExceptionResolver simpleMappingExceptionResolver;
-
-    private MockMvc mockMvc;
+@SpringJUnitWebConfig
 
     @BeforeEach
     void setup() {

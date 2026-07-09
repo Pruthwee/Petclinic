@@ -19,17 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test class for {@link OwnerController}
- *
- * @author Colin But
  */
-
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
-class OwnerControllerTests {
-
-    private static final int TEST_OWNER_ID = 1;
-
-    @Autowired
-    private OwnerController ownerController;
+@SpringJUnitWebConfig
 
     @Autowired
     private ClinicService clinicService;
@@ -130,7 +121,6 @@ class OwnerControllerTests {
     void testInitUpdateOwnerForm() throws Exception {
         mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID))
             .andExpect(status().isOk())
-            .andExpect(model().attributeExists("owner"))
             .andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
             .andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
             .andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))

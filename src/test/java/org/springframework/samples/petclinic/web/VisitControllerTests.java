@@ -16,15 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test class for {@link VisitController}
- *
- * @author Colin But
- */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
-class VisitControllerTests {
-
-    private static final int TEST_PET_ID = 1;
-
-    @Autowired
+@SpringJUnitWebConfig
     private VisitController visitController;
 
     @Autowired

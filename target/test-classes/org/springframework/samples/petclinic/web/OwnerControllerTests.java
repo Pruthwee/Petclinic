@@ -20,19 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for {@link OwnerController}
  *
- * @author Colin But
- */
-
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
-class OwnerControllerTests {
-
-    private static final int TEST_OWNER_ID = 1;
-
-    @Autowired
-    private OwnerController ownerController;
-
-    @Autowired
-    private ClinicService clinicService;
+@SpringJUnitWebConfig
 
     private MockMvc mockMvc;
 
