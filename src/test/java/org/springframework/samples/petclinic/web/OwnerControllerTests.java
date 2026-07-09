@@ -9,6 +9,9 @@ import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.samples.petclinic.MvcCoreConfig;
+import org.springframework.samples.petclinic.MvcViewConfig;
+import org.springframework.samples.petclinic.MvcTestConfig;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -23,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Colin But
  */
 
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcTestConfig.class, MvcCoreConfig.class, MvcViewConfig.class})
 class OwnerControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
@@ -130,7 +133,6 @@ class OwnerControllerTests {
     void testInitUpdateOwnerForm() throws Exception {
         mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID))
             .andExpect(status().isOk())
-            .andExpect(model().attributeExists("owner"))
             .andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
             .andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
             .andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))

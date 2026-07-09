@@ -1,29 +1,11 @@
-/*
- * Copyright 2002-2016 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.springframework.samples.petclinic;
 
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
 import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-
 
 /**
  * In Servlet 3.0+ environments, this class replaces the traditional {@code web.xml}-based approach in order to configure the
@@ -45,24 +27,24 @@ public class PetclinicInitializer extends AbstractDispatcherServletInitializer {
      * When using Spring JDBC, use: jdbc
      * When using Spring Data JPA, use: spring-data-jpa
      * <p/>
-     * <p>
+     * <p/>
      * You also may use the -Dspring.profiles.active=jdbc VM options to change
      * default jpa Spring profile.
      */
-    private static final String SPRING_PROFILE = "jpa";
+    private static final String SPRING_PROFILE = System.getProperty("spring.profiles.active", "jpa");
 
     @Override
     protected WebApplicationContext createRootApplicationContext() {
-        XmlWebApplicationContext rootAppContext = new XmlWebApplicationContext();
-        rootAppContext.setConfigLocations("classpath:spring/business-config.xml", "classpath:spring/tools-config.xml");
+        AnnotationConfigWebApplicationContext rootAppContext = new AnnotationConfigWebApplicationContext();
+        rootAppContext.register(BusinessConfig.class, ToolsConfig.class, DataSourceConfig.class);
         rootAppContext.getEnvironment().setDefaultProfiles(SPRING_PROFILE);
         return rootAppContext;
     }
 
     @Override
     protected WebApplicationContext createServletApplicationContext() {
-        XmlWebApplicationContext webAppContext = new XmlWebApplicationContext();
-        webAppContext.setConfigLocation("classpath:spring/mvc-core-config.xml");
+        AnnotationConfigWebApplicationContext webAppContext = new AnnotationConfigWebApplicationContext();
+        webAppContext.register(MvcCoreConfig.class, MvcViewConfig.class);
         return webAppContext;
     }
 
