@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Colin But
  */
 
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcTestConfig.class, MvcCoreConfig.class})
 class OwnerControllerTests {
 
     private static final int TEST_OWNER_ID = 1;

@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for the {@link VetController}
  */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class, MvcTestConfig.class})
 class VetControllerTests {
 
     @Autowired
@@ -76,4 +76,3 @@ class VetControllerTests {
     }
 
 }
-
