@@ -1,0 +1,17 @@
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/PetclinicInitializer.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/Owner.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/Person.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/Pet.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/PetType.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/Specialty.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/Vet.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/model/Visit.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/repository/jpa/JpaOwnerRepositoryImpl.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/repository/jpa/JpaPetRepositoryImpl.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/repository/jpa/JpaVetRepositoryImpl.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/repository/jpa/JpaVisitRepositoryImpl.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/web/OwnerController.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/web/PetController.java
+/modernize-data/studio-data/TNT1001/APP903148/transformed-code/291/studio-workspace/CompTestPC/src/main/java/org/springframework/samples/petclinic/web/VisitController.java
