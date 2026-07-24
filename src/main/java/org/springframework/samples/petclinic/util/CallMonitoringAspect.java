@@ -43,17 +43,9 @@ public class CallMonitoringAspect {
     private int callCount = 0;
 
     private long accumulatedCallTime = 0;
-
-    @ManagedAttribute
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @ManagedAttribute
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
+    private volatile boolean enabled = true;
+    private final java.util.concurrent.atomic.AtomicInteger callCount = new java.util.concurrent.atomic.AtomicInteger(0);
+    private final java.util.concurrent.atomic.AtomicLong accumulatedCallTime = new java.util.concurrent.atomic.AtomicLong(0);
     @ManagedOperation
     public void reset() {
         this.callCount = 0;
@@ -61,14 +53,13 @@ public class CallMonitoringAspect {
     }
 
     @ManagedAttribute
+        this.callCount.set(0);
+        this.accumulatedCallTime.set(0);
     public int getCallCount() {
-        return callCount;
-    }
-
-    @ManagedAttribute
-    public long getCallTime() {
-        if (this.callCount > 0)
-            return this.accumulatedCallTime / this.callCount;
+        return callCount.get();
+        int count = callCount.get();
+        if (count > 0)
+            return accumulatedCallTime.get() / count;
         else
             return 0;
     }
@@ -83,14 +74,8 @@ public class CallMonitoringAspect {
             try {
                 return joinPoint.proceed();
             } finally {
-                sw.stop();
-                synchronized (this) {
-                    this.callCount++;
-                    this.accumulatedCallTime += sw.getTotalTimeMillis();
-                }
-            }
-        } else {
-            return joinPoint.proceed();
+                this.callCount.incrementAndGet();
+                this.accumulatedCallTime.addAndGet(sw.getTotalTimeMillis());
         }
     }
 

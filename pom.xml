@@ -7,9 +7,6 @@
     <version>5.3.13</version>
 
     <name>Spring Framework Petclinic</name>
-    <packaging>war</packaging>
-    <description>A Spring Framework application based on JSP, Spring MVC, Spring Data JPA, Hibernate and JDBC</description>
-    <url>https://spring-petclinic.github.io/</url>
 
     <properties>
 
@@ -112,17 +109,13 @@
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
             <version>${tomcat.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
+    -->
         <dependency>
-            <groupId>org.apache.taglibs</groupId>
-            <artifactId>taglibs-standard-jstlel</artifactId>
-            <version>${taglibs-standard.version}</version>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>4.0.3</version>
+            <scope>runtime</scope>
         </dependency>
-        <!--  JSon -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
         <dependency>
@@ -140,16 +133,8 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring-framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring-framework.version}</version>
+        <!-- Replace tomcat-jdbc with HikariCP for better cloud-native connection pooling -->
+        <!-- HikariCP is already added in dependencies above, but let's ensure it's used -->
         </dependency>
         <!-- used for EhCacheCacheManager -->
         <dependency>
@@ -167,18 +152,6 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>${aspectj.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- Database connection pool
-        See here for more details on commons-dbcp versus tomcat-jdbc:
-        http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5/
-    -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
@@ -236,34 +209,18 @@
 
         <!-- Test Artifacts -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring-framework.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter.version}</version>
-        </dependency>
-        <dependency>
+                    <jdbc.url>${env.JDBC_URL:jdbc:mysql://localhost:3306/petclinic?useUnicode=true}</jdbc.url>
+                    <jdbc.username>${env.JDBC_USERNAME:petclinic}</jdbc.username>
+                    <jdbc.password>${env.JDBC_PASSWORD:petclinic}</jdbc.password>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${mockito.version}</version>
-        </dependency>
-        <dependency>
+                    <jdbc.url>${env.JDBC_URL:jdbc:postgresql://localhost:5432/petclinic}</jdbc.url>
+                    <jdbc.username>${env.JDBC_USERNAME:postgres}</jdbc.username>
+                    <jdbc.password>${env.JDBC_PASSWORD:petclinic}</jdbc.password>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
             <version>${hamcrest.version}</version>
