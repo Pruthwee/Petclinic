@@ -19,26 +19,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Test class for the {@link PetController}
- *
- * @author Colin But
+ * Test class for {@link PetController}
  */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class, MvcTestConfig.class})
 class PetControllerTests {
-
-    private static final int TEST_OWNER_ID = 1;
-    private static final int TEST_PET_ID = 1;
 
     @Autowired
     private PetController petController;
 
     @Autowired
-    private FormattingConversionServiceFactoryBean formattingConversionServiceFactoryBean;
-
-    @Autowired
     private ClinicService clinicService;
 
+    @Autowired
+    private FormattingConversionServiceFactoryBean formattingConversionServiceFactoryBean;
+
     private MockMvc mockMvc;
+
+    private static final int TEST_OWNER_ID = 1;
+    private static final int TEST_PET_ID = 1;
 
     @BeforeEach
     void setup() {

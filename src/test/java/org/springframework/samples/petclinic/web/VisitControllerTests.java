@@ -16,13 +16,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test class for {@link VisitController}
- *
- * @author Colin But
  */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class, MvcTestConfig.class})
 class VisitControllerTests {
-
-    private static final int TEST_PET_ID = 1;
 
     @Autowired
     private VisitController visitController;
@@ -31,6 +27,8 @@ class VisitControllerTests {
     private ClinicService clinicService;
 
     private MockMvc mockMvc;
+
+    private static final int TEST_PET_ID = 1;
 
     @BeforeEach
     void setup() {
@@ -73,6 +71,5 @@ class VisitControllerTests {
             .andExpect(model().attributeExists("visits"))
             .andExpect(view().name("visitList"));
     }
-
 
 }

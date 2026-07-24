@@ -9,11 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  * @author Rod Johnson
  * @author Sam Brannen
  * @author Michael Isvy
- * @see AbstractClinicServiceTests AbstractClinicServiceTests for more details. </p>
  */
-
-@SpringJUnitConfig(locations = {"classpath:spring/business-config.xml"})
-@ActiveProfiles("jpa")
+@SpringJUnitConfig(classes = {BusinessConfig.class})
 class ClinicServiceJpaTests extends AbstractClinicServiceTests {
-
 }
