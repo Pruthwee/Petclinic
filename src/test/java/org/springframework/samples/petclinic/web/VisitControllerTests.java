@@ -11,23 +11,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-/**
- * Test class for {@link VisitController}
- *
- * @author Colin But
- */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class})
 class VisitControllerTests {
-
-    private static final int TEST_PET_ID = 1;
-
-    @Autowired
-    private VisitController visitController;
-
-    @Autowired
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class})
+class VisitControllerTests {
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class})
     private ClinicService clinicService;
 
     private MockMvc mockMvc;

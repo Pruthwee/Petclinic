@@ -10,24 +10,12 @@ import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-/**
- * Test class for the {@link VetController}
- */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class})
 class VetControllerTests {
-
-    @Autowired
-    private VetController vetController;
-
-    @Autowired
+static org.mockito.BDDMockito.given;
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class})
+class VetControllerTests {
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class})
     private ClinicService clinicService;
 
     private MockMvc mockMvc;
@@ -76,4 +64,3 @@ class VetControllerTests {
     }
 
 }
-
