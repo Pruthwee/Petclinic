@@ -51,7 +51,7 @@
         - Files are stored inside src/main/resources
     -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
-          p:basename="messages/messages"/>
+          p:basename="messages/messages" p:defaultEncoding="UTF-8"/>
 
     <!--
         - This bean resolves specific types of exceptions to corresponding logical
