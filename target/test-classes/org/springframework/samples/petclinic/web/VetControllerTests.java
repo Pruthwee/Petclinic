@@ -4,6 +4,8 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.config.MvcCoreConfig;
+import org.springframework.samples.petclinic.config.MvcTestConfig;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
@@ -21,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for the {@link VetController}
  */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class, MvcTestConfig.class})
 class VetControllerTests {
 
     @Autowired

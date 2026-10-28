@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataSourceConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Spring Framework Petclinic</a> &gt; <a href="index.source.html" class="el_package">org.springframework.samples.petclinic.config</a> &gt; <span class="el_source">DataSourceConfig.java</span></div><h1>DataSourceConfig.java</h1><pre class="source lang-java linenums">package org.springframework.samples.petclinic.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+
+/**
+ * Java-based replacement of {@code datasource-config.xml}: the DataSource and the database initializer.
+ * &lt;p&gt;
+ * The JDBC settings are read from the Spring {@link Environment}: the keys of
+ * {@code spring/data-access.properties} (jdbc.driverClassName, jdbc.url, jdbc.username, jdbc.password,
+ * jdbc.initLocation, jdbc.dataLocation) keep their names, and each of them can be overridden at runtime by a
+ * system property or by the matching environment variable (for example JDBC_URL), which is how a deployment
+ * injects the values (e.g. from AWS Parameter Store or Secrets Manager).
+ */
+@Configuration
+@PropertySource(&quot;classpath:spring/data-access.properties&quot;)
+<span class="fc" id="L28">public class DataSourceConfig {</span>
+
+    @Autowired
+    private Environment env;
+
+    /** DataSource configuration for the tomcat jdbc connection pool. */
+    @Bean
+    @Profile(&quot;!javaee&quot;)
+    public DataSource dataSource() {
+<span class="fc" id="L37">        org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();</span>
+<span class="fc" id="L38">        dataSource.setDriverClassName(env.getRequiredProperty(&quot;jdbc.driverClassName&quot;));</span>
+<span class="fc" id="L39">        dataSource.setUrl(env.getRequiredProperty(&quot;jdbc.url&quot;));</span>
+<span class="fc" id="L40">        dataSource.setUsername(env.getRequiredProperty(&quot;jdbc.username&quot;));</span>
+<span class="fc" id="L41">        dataSource.setPassword(env.getRequiredProperty(&quot;jdbc.password&quot;));</span>
+<span class="fc" id="L42">        return dataSource;</span>
+    }
+
+    /** JNDI DataSource for JEE environments. */
+    @Bean
+    @Profile(&quot;javaee&quot;)
+    public DataSource jndiDataSource() {
+<span class="nc" id="L49">        return new JndiDataSourceLookup().getDataSource(&quot;java:comp/env/jdbc/petclinic&quot;);</span>
+    }
+
+    /** Database initializer. If any of the script fails, the initialization stops. */
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
+<span class="fc" id="L55">        ResourceLoader resourceLoader = new DefaultResourceLoader();</span>
+<span class="fc" id="L56">        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();</span>
+<span class="fc" id="L57">        populator.addScript(resourceLoader.getResource(env.getRequiredProperty(&quot;jdbc.initLocation&quot;)));</span>
+<span class="fc" id="L58">        populator.addScript(resourceLoader.getResource(env.getRequiredProperty(&quot;jdbc.dataLocation&quot;)));</span>
+<span class="fc" id="L59">        DataSourceInitializer initializer = new DataSourceInitializer();</span>
+<span class="fc" id="L60">        initializer.setDataSource(dataSource);</span>
+<span class="fc" id="L61">        initializer.setDatabasePopulator(populator);</span>
+<span class="fc" id="L62">        return initializer;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

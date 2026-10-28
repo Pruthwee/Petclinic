@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.service;
 
+import org.springframework.samples.petclinic.config.BusinessConfig;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -10,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  * @see AbstractClinicServiceTests AbstractClinicServiceTests for more details. </p>
  */
 
-@SpringJUnitConfig(locations = {"classpath:spring/business-config.xml"})
+@SpringJUnitConfig(classes = BusinessConfig.class)
 @ActiveProfiles("spring-data-jpa")
 class ClinicServiceSpringDataJpaTests extends AbstractClinicServiceTests {
 

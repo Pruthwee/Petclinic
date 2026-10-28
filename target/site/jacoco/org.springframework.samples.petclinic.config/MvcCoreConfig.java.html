@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MvcCoreConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Spring Framework Petclinic</a> &gt; <a href="index.source.html" class="el_package">org.springframework.samples.petclinic.config</a> &gt; <span class="el_source">MvcCoreConfig.java</span></div><h1>MvcCoreConfig.java</h1><pre class="source lang-java linenums">package org.springframework.samples.petclinic.config;
+
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.format.support.FormattingConversionService;
+import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.samples.petclinic.model.Vets;
+import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.web.PetTypeFormatter;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.xml.MarshallingView;
+
+/**
+ * Java-based replacement of {@code mvc-core-config.xml} and {@code mvc-view-config.xml}:
+ * DispatcherServlet application context for PetClinic's web tier.
+ */
+@Configuration
+@ComponentScan(basePackages = &quot;org.springframework.samples.petclinic.web&quot;)
+<span class="fc" id="L31">public class MvcCoreConfig extends WebMvcConfigurationSupport {</span>
+
+    @Autowired
+    private ClinicService clinicService;
+
+    /** All resources inside folder src/main/webapp/resources are mapped so they can be referred to inside JSP files. */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+<span class="fc" id="L39">        registry.addResourceHandler(&quot;/resources/**&quot;).addResourceLocations(&quot;/resources/&quot;);</span>
+        // uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...)
+<span class="fc" id="L41">        registry.addResourceHandler(&quot;/webjars/**&quot;).addResourceLocations(&quot;classpath:/META-INF/resources/webjars/&quot;);</span>
+<span class="fc" id="L42">    }</span>
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+<span class="fc" id="L46">        registry.addViewController(&quot;/&quot;).setViewName(&quot;welcome&quot;);</span>
+<span class="fc" id="L47">    }</span>
+
+    /** Serve static resources (*.html, ...) from src/main/webapp/. */
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+<span class="fc" id="L52">        configurer.enable();</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * The ContentNegotiatingViewResolver delegates to the InternalResourceViewResolver and BeanNameViewResolver,
+     * and uses the requested media type to pick a matching view.
+     */
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+<span class="fc" id="L61">        registry.enableContentNegotiation(true, new JstlView(&quot;&quot;));</span>
+<span class="fc" id="L62">        registry.beanName();</span>
+<span class="fc" id="L63">        registry.jsp(&quot;/WEB-INF/jsp/&quot;, &quot;.jsp&quot;);</span>
+<span class="fc" id="L64">    }</span>
+
+    /** Conversion service with the formatter that parses and prints elements of type PetType. */
+    @Bean
+    public FormattingConversionServiceFactoryBean conversionService() {
+<span class="fc" id="L69">        FormattingConversionServiceFactoryBean factoryBean = new FormattingConversionServiceFactoryBean();</span>
+<span class="fc" id="L70">        factoryBean.setFormatters(Collections.singleton(new PetTypeFormatter(clinicService)));</span>
+<span class="fc" id="L71">        return factoryBean;</span>
+    }
+
+    /** The MVC infrastructure uses the 'conversionService' bean above. */
+    @Override
+    @Bean
+    public FormattingConversionService mvcConversionService() {
+<span class="fc" id="L78">        return conversionService().getObject();</span>
+    }
+
+    /** Message source for this context, loaded from localized &quot;messages_xx&quot; files stored in src/main/resources. */
+    @Bean
+    public ResourceBundleMessageSource messageSource() {
+<span class="fc" id="L84">        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();</span>
+<span class="fc" id="L85">        messageSource.setBasename(&quot;messages/messages&quot;);</span>
+<span class="fc" id="L86">        return messageSource;</span>
+    }
+
+    /** Resolves specific types of exceptions to corresponding logical view names for error views. */
+    @Bean
+    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
+<span class="fc" id="L92">        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();</span>
+<span class="fc" id="L93">        resolver.setDefaultErrorView(&quot;exception&quot;);</span>
+        // needed otherwise exceptions won't be logged anywhere
+<span class="fc" id="L95">        resolver.setWarnLogCategory(&quot;warn&quot;);</span>
+<span class="fc" id="L96">        return resolver;</span>
+    }
+
+    /** Renders an XML view. Used by the BeanNameViewResolver. */
+    @Bean(name = &quot;vets/vetList.xml&quot;)
+    public MarshallingView vetListXmlView(Jaxb2Marshaller marshaller) {
+<span class="fc" id="L102">        return new MarshallingView(marshaller);</span>
+    }
+
+    /** Object-XML mapping declared using annotations inside 'Vets'. */
+    @Bean
+    public Jaxb2Marshaller marshaller() {
+<span class="fc" id="L108">        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();</span>
+<span class="fc" id="L109">        marshaller.setClassesToBeBound(Vets.class);</span>
+<span class="fc" id="L110">        return marshaller;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

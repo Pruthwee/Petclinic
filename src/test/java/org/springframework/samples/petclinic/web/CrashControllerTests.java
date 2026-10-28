@@ -3,6 +3,8 @@ package org.springframework.samples.petclinic.web;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.config.MvcCoreConfig;
+import org.springframework.samples.petclinic.config.MvcTestConfig;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -16,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Colin But
  */
-@SpringJUnitWebConfig(locations = {"classpath:spring/mvc-core-config.xml", "classpath:spring/mvc-test-config.xml"})
+@SpringJUnitWebConfig(classes = {MvcCoreConfig.class, MvcTestConfig.class})
 class CrashControllerTests {
 
     @Autowired
